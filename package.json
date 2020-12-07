@@ -1,0 +1,20 @@
+{
+	"name": "epic-hawk-api",
+	"version": "1.0.0",
+	"description": "Practice best practices for creating api with pagination using mysql and sequelize",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com-personal:condinoaljoseph/epic-hawk-api.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"nodemon": "^2.0.6"
+	}
+}
