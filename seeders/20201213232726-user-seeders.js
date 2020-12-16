@@ -11,6 +11,8 @@ const data = (totalUser = 10) => {
 			name: faker.name.findName(),
 			email: faker.internet.exampleEmail(),
 			password: bcrypt.hashSync("secret123"),
+			reset_password_token: "",
+			reset_password_expires: null,
 			created_at: new Date(),
 			updated_at: new Date()
 		});
