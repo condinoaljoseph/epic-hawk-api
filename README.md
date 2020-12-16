@@ -24,7 +24,13 @@ $ npm install
 #### Create migrations:
 
 ```bash
-$ npx sequelize migration:create --name=create_table_users
+$ npx sequelize migration:create --name=create_users
+```
+
+### Run pending migrations
+
+```bash
+$ npx sequelize db:migrate
 ```
 
 #### Seeding tables:

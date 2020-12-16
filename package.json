@@ -11,6 +11,7 @@
 		"url": "git@github.com-personal:condinoaljoseph/epic-hawk-api.git"
 	},
 	"dependencies": {
+		"@sendgrid/mail": "^7.4.0",
 		"bcryptjs": "^2.4.3",
 		"cookie-parser": "~1.4.4",
 		"debug": "~2.6.9",

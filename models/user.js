@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
 		/**
@@ -11,12 +12,21 @@ module.exports = (sequelize, DataTypes) => {
 			// define association here
 		}
 	}
+
 	User.init(
 		{
 			name: DataTypes.STRING,
 			email: DataTypes.STRING,
 			password: {
 				type: DataTypes.STRING
+			},
+			resetPasswordToken: {
+				type: DataTypes.STRING,
+				field: "reset_password_token"
+			},
+			resetPasswordExpires: {
+				type: DataTypes.DATE,
+				field: "reset_password_expires"
 			},
 			createdAt: {
 				type: DataTypes.DATE,
@@ -33,5 +43,6 @@ module.exports = (sequelize, DataTypes) => {
 			tableName: "users"
 		}
 	);
+
 	return User;
 };
