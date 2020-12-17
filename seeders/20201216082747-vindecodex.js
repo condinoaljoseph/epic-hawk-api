@@ -2,6 +2,8 @@
 
 const bcrypt = require("bcryptjs");
 
+// TODO add salt to generate
+
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		/**
@@ -18,6 +20,15 @@ module.exports = {
 			{
 				name: "Vincent Villaluna",
 				email: "villalunavincent@gmail.com",
+				password: bcrypt.hashSync("secret123"),
+				reset_password_token: "",
+				reset_password_expires: null,
+				created_at: new Date(),
+				updated_at: new Date()
+			},
+			{
+				name: "Al Joseph Condino",
+				email: "condinoaj04@gmail.com",
 				password: bcrypt.hashSync("secret123"),
 				reset_password_token: "",
 				reset_password_expires: null,
