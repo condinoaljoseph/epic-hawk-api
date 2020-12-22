@@ -1,13 +1,13 @@
-const dayjs = require("dayjs");
-const duration = require("dayjs/plugin/duration");
-const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
-const sgMail = require("@sendgrid/mail");
-const { Op } = require("sequelize");
+const dayjs = require('dayjs');
+const duration = require('dayjs/plugin/duration');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
+const sgMail = require('@sendgrid/mail');
+const { Op } = require('sequelize');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 dayjs.extend(duration);
 
-const { User } = require("../models");
+const { User } = require('../models');
 
 exports.login = async (req, res) => {
 	const { email, password } = req.body;
@@ -18,13 +18,13 @@ exports.login = async (req, res) => {
 		});
 
 		if (!user || !bcrypt.compareSync(password, user.password))
-			throw "user not found";
+			throw 'user not found';
 
 		user.password = undefined;
 
 		res.status(200).json({
 			success: true,
-			message: "login success",
+			message: 'login success',
 			data: user
 		});
 	} catch (e) {
@@ -44,12 +44,13 @@ exports.recover = async (req, res) => {
 			where: { email }
 		});
 
-		if (!user) throw "user not found";
+		if (!user) throw new Error('user not found');
 
-		user.resetPasswordToken = crypto.randomBytes(20).toString("hex");
+		// TODO create instance method on pre save in model
+		user.resetPasswordToken = crypto.randomBytes(20).toString('hex');
 		user.resetPasswordExpires = dayjs()
-			.add(dayjs.duration(1, "h"))
-			.format("YYYY-MM-DD hh:mm:ss"); // 1 hour expiration
+			.add(dayjs.duration(1, 'h'))
+			.format('YYYY-MM-DD hh:mm:ss'); // 1 hour expiration
 
 		// generate password reset
 		await user.save();
@@ -60,10 +61,8 @@ exports.recover = async (req, res) => {
 		const mailOptions = {
 			to: user.email,
 			from: process.env.FROM_EMAIL,
-			subject: "Password reset request",
-			text: `Hi ${user.name} \n
-			Please click on the following link ${link} to reset your password. \n\n
-			If you did not request this, please ignore this email and your password will remain unchanged.\n`
+			subject: 'Password reset request',
+			text: `Hi ${user.name} Please click on the following link ${link} to reset your password. If you did not request this, please ignore this email and your password will remain unchanged.`
 		};
 
 		await sgMail.send(mailOptions);
@@ -73,11 +72,7 @@ exports.recover = async (req, res) => {
 			message: `A reset email has been sent to ${user.email}`
 		});
 	} catch (e) {
-		res.status(400).json({
-			success: false,
-			message: e.toString(),
-			data: null
-		});
+		res.status(400).json({ success: false, message: e.toString() });
 	}
 };
 
@@ -89,16 +84,16 @@ exports.reset = async (req, res) => {
 			where: {
 				resetPasswordToken: token,
 				resetPasswordExpires: {
-					[Op.gt]: dayjs().format("YYYY-MM-DD hh:mm:ss")
+					[Op.gt]: dayjs().format('YYYY-MM-DD hh:mm:ss')
 				}
 			}
 		});
 
-		if (!user) throw "user not found";
+		if (!user) throw 'user not found';
 
 		res.status(200).json({
 			success: true,
-			message: "Password reset token is valid",
+			message: 'Password reset token is valid',
 			data: user
 		});
 	} catch (e) {
@@ -119,24 +114,24 @@ exports.resetPassword = async (req, res) => {
 			where: {
 				resetPasswordToken: token,
 				resetPasswordExpires: {
-					[Op.gt]: dayjs().format("YYYY-MM-DD hh:mm:ss")
+					[Op.gt]: dayjs().format('YYYY-MM-DD hh:mm:ss')
 				}
 			}
 		});
 
-		if (!user) throw "user not found";
+		if (!user) throw 'user not found';
 
 		const salt = await bcrypt.genSalt(10);
 
 		user.password = await bcrypt.hash(password, salt);
-		user.resetPasswordToken = "";
+		user.resetPasswordToken = '';
 		user.resetPasswordExpires = null;
 
-		await user.save(); // TODO bycrypt
+		await user.save();
 
 		res.status(200).json({
 			success: true,
-			message: "Your password has been updated",
+			message: 'Your password has been updated',
 			data: { user, password }
 		});
 	} catch (e) {
