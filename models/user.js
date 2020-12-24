@@ -1,6 +1,7 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 
+// TODO create instance method on pre save in model
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
 		/**
@@ -22,25 +23,25 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			resetPasswordToken: {
 				type: DataTypes.STRING,
-				field: "reset_password_token"
+				field: 'reset_password_token'
 			},
 			resetPasswordExpires: {
 				type: DataTypes.DATE,
-				field: "reset_password_expires"
+				field: 'reset_password_expires'
 			},
 			createdAt: {
 				type: DataTypes.DATE,
-				field: "created_at"
+				field: 'created_at'
 			},
 			updatedAt: {
 				type: DataTypes.DATE,
-				field: "updated_at"
+				field: 'updated_at'
 			}
 		},
 		{
 			sequelize,
-			modelName: "User",
-			tableName: "users"
+			modelName: 'User',
+			tableName: 'users'
 		}
 	);
 
